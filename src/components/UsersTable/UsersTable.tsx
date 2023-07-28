@@ -1,12 +1,6 @@
 import { IUser } from "@/interfaces/IUser";
 import styled from "styled-components";
 
-const StyledTable = styled.table`
-  width: 90%;
-  margin: 0 auto;
-  padding: 20px 50px;
-`;
-
 const StyledTh = styled.th`
   flex: 1;
   padding: 20px 10px 20px;
@@ -49,7 +43,7 @@ interface IUserTableProps {
 
 export const UsersTable: React.FC<IUserTableProps> = ({ users }) => {
   return (
-    <StyledTable>
+    <table style={{width: "100%"}}>
       <thead>
         <StyledTr>
           <StyledHiddenTh>id</StyledHiddenTh>
@@ -66,6 +60,6 @@ export const UsersTable: React.FC<IUserTableProps> = ({ users }) => {
           </StyledTr>
         ))}
       </tbody>
-    </StyledTable>
+    </table>
   )
 }
