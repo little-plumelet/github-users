@@ -1,5 +1,6 @@
 "use client";
 
+import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
 import { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
@@ -37,19 +38,34 @@ const Span = styled.span`
   padding: 0 20px;
 `;
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const error = new Error();
+    await res.json().then((data) => (error.message = data.message));
+    throw error;
+  }
+
+  return res.json();
+};
 
 interface UserTableWithPaginationProps {
   searchValue: string;
 }
+
+type OrderType = "asc" | "desc" | "";
 
 export const UserTableWithPagination: React.FC<
   UserTableWithPaginationProps
 > = ({ searchValue }) => {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [sortOrder, setSortOrder] = useState<OrderType>("");
   const { data, error, isLoading } = useSWR(
-    `https://api.github.com/search/users?q=${searchValue}in:login&page=${pageIndex}&per_page=${pageSize}`,
+    `https://api.github.com/search/users?q=${searchValue}+in:login&page=${pageIndex}&per_page=${pageSize}&${
+      sortOrder ? "sort=repositories&order=" + sortOrder : null
+    }`,
     fetcher
   );
   const totalPages = Math.ceil(data?.total_count / pageSize);
@@ -58,7 +74,7 @@ export const UserTableWithPagination: React.FC<
     return (
       <div
         style={{
-          width: "100vw",
+          width: "100%",
           height: "80vh",
           display: "flex",
           justifyContent: "center",
@@ -71,7 +87,23 @@ export const UserTableWithPagination: React.FC<
   }
 
   if (error) {
-    return <>...error occured while fetching users....</>;
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "80vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+          color: "darkred",
+        }}
+      >
+        <div>Error occured</div>
+        <div>{error?.message}</div>
+      </div>
+    );
   }
   console.log("data = ", data);
 
@@ -83,10 +115,24 @@ export const UserTableWithPagination: React.FC<
     setPageIndex((prevPage) => prevPage + 1);
   };
 
+  const handleSortByRepositories = () => {
+    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
+
   return (
     <>
+      <div>
+        <Button onClick={handleSortByRepositories}>
+          Sort users by number of reppositories{" "}
+          {sortOrder === "asc" ? (
+            <span>&#x25B2;</span>
+          ) : sortOrder === "desc" ? (
+            <span>&#x25BC;</span>
+          ) : null}
+        </Button>
+      </div>
       <UsersTable users={data?.items} />
-      <br/>
+      <br />
       <div
         style={{
           width: "100%",
@@ -106,11 +152,19 @@ export const UserTableWithPagination: React.FC<
             Next
           </Button>
         </div>
-          <Select onChange={(event) => setPageSize(parseInt(event?.target?.value))}>
-            <option selected={pageSize === 10 ? true : false} value="10">10 / page</option>
-            <option selected={pageSize === 20 ? true : false} value="20">20 / page</option>
-            <option selected={pageSize === 30 ? true : false} value="30">30 / page</option>
-          </Select>
+        <Select
+          onChange={(event) => setPageSize(parseInt(event?.target?.value))}
+        >
+          <option selected={pageSize === 10 ? true : false} value="10">
+            10 / page
+          </option>
+          <option selected={pageSize === 20 ? true : false} value="20">
+            20 / page
+          </option>
+          <option selected={pageSize === 30 ? true : false} value="30">
+            30 / page
+          </option>
+        </Select>
       </div>
     </>
   );
