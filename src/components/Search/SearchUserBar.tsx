@@ -17,11 +17,9 @@ export const SearchUserBar = ({ value, setValue, setSearchValue }: ISearchUserBa
   }
 
   return (
-    <>
-      <form>
-        <input id="searchUserBar" value={value} onChange={handleSearchChange}/>
-        <button type="submit" onClick={handleSearch}>Search</button>
-      </form>
-    </>
+    <form>
+      <input id="searchUserBar" value={value} onChange={handleSearchChange}/>
+      <button type="submit" onClick={handleSearch}>Search</button>
+    </form>
   )
 }

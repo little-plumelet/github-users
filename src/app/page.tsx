@@ -10,6 +10,7 @@ const StyledMain = styled.main`
   margin: 0 auto;
   padding: 20px 50px;
 `;
+
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [searchValue, setSearchValue] = useState("");

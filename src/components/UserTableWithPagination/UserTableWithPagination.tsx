@@ -105,7 +105,6 @@ export const UserTableWithPagination: React.FC<
       </div>
     );
   }
-  console.log("data = ", data);
 
   const handlePreviousPage = () => {
     setPageIndex((prevPage) => prevPage - 1);
@@ -121,16 +120,15 @@ export const UserTableWithPagination: React.FC<
 
   return (
     <>
-      <div>
-        <Button onClick={handleSortByRepositories}>
-          Sort users by number of reppositories{" "}
-          {sortOrder === "asc" ? (
-            <span>&#x25B2;</span>
-          ) : sortOrder === "desc" ? (
-            <span>&#x25BC;</span>
-          ) : null}
-        </Button>
-      </div>
+      <Button onClick={handleSortByRepositories}>
+        Sort users by number of reppositories{" "}
+        {sortOrder === "asc" ? (
+          <span>&#x25B2;</span>
+        ) : sortOrder === "desc" ? (
+          <span>&#x25BC;</span>
+        ) : null}
+      </Button>
+      <br />
       <UsersTable users={data?.items} />
       <br />
       <div
