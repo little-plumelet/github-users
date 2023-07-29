@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchUserBar } from "@/components/Search/SearchUserBar";
 import { UserTableWithPagination } from "@/components/UserTableWithPagination/UserTableWithPagination";
 import { StyledMain } from './styles';
 
 export default function Home() {
-  const [inputValue, setInputValue] = useState(localStorage.getItem('searchUserValue') ?? '');
-  const [searchValue, setSearchValue] = useState(localStorage.getItem('searchUserValue') ?? '');
+  const [inputValue, setInputValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <StyledMain>

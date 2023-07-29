@@ -1,5 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { StyledSearchButton, StyledSearchForm, StyledSearchInput } from "./styles";
+import {
+  StyledSearchButton,
+  StyledSearchForm,
+  StyledSearchInput,
+} from "./styles";
 
 interface ISearchUserBarProps {
   value: string;
@@ -13,7 +17,6 @@ export const SearchUserBar = ({
 }: ISearchUserBarProps) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-    localStorage.setItem('searchUserValue', event.target.value);
   };
 
   const handleSearch = (event: React.MouseEvent<HTMLElement>) => {
