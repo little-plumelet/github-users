@@ -45,6 +45,11 @@ export const StyledButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &:hover {
+    cursor: pointer;
+    color: deepskyblue;
+  }
 `;
 
 export const StyledSelect = styled.select`
