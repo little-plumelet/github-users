@@ -1,41 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import styled from "styled-components";
 import useSWR from "swr";
 import { UsersTable } from "../UsersTable/UsersTable";
-
-const Button = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const Select = styled.select`
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-`;
-
-const Span = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-`;
+import {
+  StyledButton,
+  StyledButtonContainer,
+  StyledErrorText,
+  StyledLoader,
+  StyledPagination,
+  StyledSelect,
+  StyledSpan,
+} from "./styles";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -70,38 +46,15 @@ export const UserTableWithPagination: React.FC<
   const totalPages = Math.ceil(data?.total_count / pageSize);
 
   if (isLoading) {
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "80vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        loading data...
-      </div>
-    );
+    return <StyledLoader>loading data...</StyledLoader>;
   }
 
   if (error) {
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "20px",
-          color: "darkred",
-        }}
-      >
+      <StyledErrorText>
         <div>Error occured</div>
         <div>{error?.message}</div>
-      </div>
+      </StyledErrorText>
     );
   }
 
@@ -119,37 +72,32 @@ export const UserTableWithPagination: React.FC<
 
   return (
     <>
-      <Button onClick={handleSortByRepositories}>
+      <StyledButton onClick={handleSortByRepositories}>
         Sort users by number of reppositories{" "}
         {sortOrder === "asc" ? (
           <span>&#x25B2;</span>
         ) : sortOrder === "desc" ? (
           <span>&#x25BC;</span>
         ) : null}
-      </Button>
+      </StyledButton>
       <br />
       <UsersTable users={data?.items} />
       <br />
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button onClick={() => setPageIndex(1)}>First</Button>
-        <div
-          style={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
-          <Button onClick={handlePreviousPage} disabled={pageIndex === 1}>
+      <StyledPagination>
+        <StyledButton onClick={() => setPageIndex(1)}>First</StyledButton>
+        <StyledButtonContainer>
+          <StyledButton onClick={handlePreviousPage} disabled={pageIndex === 1}>
             Previous
-          </Button>
-          <Span>{pageIndex}</Span>
-          <Button onClick={handleNextPage} disabled={pageIndex === totalPages}>
+          </StyledButton>
+          <StyledSpan>{pageIndex}</StyledSpan>
+          <StyledButton
+            onClick={handleNextPage}
+            disabled={pageIndex === totalPages || !data?.items?.length}
+          >
             Next
-          </Button>
-        </div>
-        <Select
+          </StyledButton>
+        </StyledButtonContainer>
+        <StyledSelect
           onChange={(event) => setPageSize(parseInt(event?.target?.value))}
         >
           <option selected={pageSize === 10 ? true : false} value="10">
@@ -161,8 +109,8 @@ export const UserTableWithPagination: React.FC<
           <option selected={pageSize === 30 ? true : false} value="30">
             30 / page
           </option>
-        </Select>
-      </div>
+        </StyledSelect>
+      </StyledPagination>
     </>
   );
 };
