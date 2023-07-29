@@ -6,8 +6,8 @@ import { UserTableWithPagination } from "@/components/UserTableWithPagination/Us
 import { StyledMain } from './styles';
 
 export default function Home() {
-  const [inputValue, setInputValue] = useState("");
-  const [searchValue, setSearchValue] = useState("");
+  const [inputValue, setInputValue] = useState(localStorage.getItem('searchUserValue') ?? '');
+  const [searchValue, setSearchValue] = useState(localStorage.getItem('searchUserValue') ?? '');
 
   return (
     <StyledMain>

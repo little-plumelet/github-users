@@ -13,6 +13,7 @@ export const SearchUserBar = ({
 }: ISearchUserBarProps) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    localStorage.setItem('searchUserValue', event.target.value);
   };
 
   const handleSearch = (event: React.MouseEvent<HTMLElement>) => {

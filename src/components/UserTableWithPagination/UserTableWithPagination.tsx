@@ -34,8 +34,10 @@ type OrderType = "asc" | "desc" | "";
 export const UserTableWithPagination: React.FC<
   UserTableWithPaginationProps
 > = ({ searchValue }) => {
-  const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const searchUserpageIndex = localStorage.getItem('searchUserpageIndex');
+  const pageSizeStorage = localStorage.getItem('pageSizeStorage');
+  const [pageIndex, setPageIndex] = useState<number>(searchUserpageIndex ?  parseInt(searchUserpageIndex) : 1);
+  const [pageSize, setPageSize] = useState(pageSizeStorage ? parseInt(pageSizeStorage) : 10);
   const [sortOrder, setSortOrder] = useState<OrderType>("");
   const { data, error, isLoading } = useSWR(
     `https://api.github.com/search/users?q=${searchValue}+in:login&page=${pageIndex}&per_page=${pageSize}&${
@@ -59,11 +61,20 @@ export const UserTableWithPagination: React.FC<
   }
 
   const handlePreviousPage = () => {
-    setPageIndex((prevPage) => prevPage - 1);
+    setPageIndex((prevPage) => {
+      const res = prevPage - 1;
+      localStorage.setItem('searchUserpageIndex', String(res));
+      return res;
+    });
+    
   };
 
   const handleNextPage = () => {
-    setPageIndex((prevPage) => prevPage + 1);
+    setPageIndex((prevPage) => {
+      const res = prevPage + 1;
+      localStorage.setItem('searchUserpageIndex', String(res));
+      return res;
+    });
   };
 
   const handleSortByRepositories = () => {
@@ -98,7 +109,10 @@ export const UserTableWithPagination: React.FC<
           </StyledButton>
         </StyledButtonContainer>
         <StyledSelect
-          onChange={(event) => setPageSize(parseInt(event?.target?.value))}
+          onChange={(event) => {
+            localStorage.setItem('pageSizeStorage', event?.target?.value);
+            setPageSize(parseInt(event?.target?.value));
+          }}
         >
           <option selected={pageSize === 10 ? true : false} value="10">
             10 / page
