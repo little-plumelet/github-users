@@ -22,7 +22,7 @@ export default function Home() {
         setValue={setInputValue}
         setSearchValue={setSearchValue}
       />
-      {!!searchValue &&<UserTableWithPagination searchValue={searchValue} />}
+      {!!searchValue && <UserTableWithPagination searchValue={searchValue} />}
     </StyledMain>
   );
 }

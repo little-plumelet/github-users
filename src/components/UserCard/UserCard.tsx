@@ -3,11 +3,12 @@
 import { IUser } from "@/interfaces/IUser";
 import useSWR from "swr";
 import Image from "next/image";
+import { CardWrapper, GridWrapper, GridItem, CardTitle, CardLinkStyle } from "./styles";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const UserCard = ({ id }: { id: number }) => {
-  console.log("id = ", id);
+
   const {
     data: user,
     error,
@@ -47,36 +48,34 @@ export const UserCard = ({ id }: { id: number }) => {
   }
 
   return (
-    <div>
+    <CardWrapper>
       {user?.avatar_url && (
-        <Image src={user.avatar_url} alt="avatar" width={100} height={100} />
+        <Image src={user.avatar_url} alt="avatar" width={150} height={150} />
       )}
-      <h3>{user?.name ?? ""}</h3>
-      <a href={user?.html_url}>GitHub page</a>
-      <div>
-        <div>
-          <div>
-            <span>login: </span>
-            <span>{user?.login ?? "unknown"}</span>
-          </div>
-          <div>
-            <span>public repos: </span>
-            <span>{user?.public_repos ?? 0}</span>
-          </div>
-          <div>
-            <span>private repos: </span>
-            <span>{user?.private_repos ?? 0}</span>
-          </div>
-          <div>
-            <span>followers: </span>
-            <span>{user?.followers ?? 0}</span>
-          </div>
-          <div>
-            <span>following: </span>
-            <span>{user?.following ?? 0}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+      <CardTitle>{user?.name ?? "Unknown name"}</CardTitle>
+      <CardLinkStyle href={user?.html_url}>GitHub page</CardLinkStyle>
+      <GridWrapper>
+        <GridItem>
+          <span>login: </span>
+          <span>{user?.login ?? "unknown login"}</span>
+        </GridItem>
+        <GridItem>
+          <span>public repos: </span>
+          <span>{user?.public_repos ?? 0}</span>
+        </GridItem>
+        <GridItem>
+          <span>private repos: </span>
+          <span>{user?.private_repos ?? 0}</span>
+        </GridItem>
+        <GridItem>
+          <span>followers: </span>
+          <span>{user?.followers ?? 0}</span>
+        </GridItem>
+        <GridItem>
+          <span>following: </span>
+          <span>{user?.following ?? 0}</span>
+        </GridItem>
+      </GridWrapper>
+    </CardWrapper>
   );
 };

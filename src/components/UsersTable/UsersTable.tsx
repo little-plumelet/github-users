@@ -27,7 +27,7 @@ const linkStyle = {
 };
 
 interface IUserTableProps {
-  users: Array<Pick<IUser, "login" | "id" | "repos_url">>;
+  users: Array<Pick<IUser, "login" | "id" | "html_url">>;
 }
 
 export const UsersTable: React.FC<IUserTableProps> = ({ users }) => {
@@ -50,7 +50,7 @@ export const UsersTable: React.FC<IUserTableProps> = ({ users }) => {
             <StyledTd>
               <Link style={linkStyle} href={`/user/${user?.id}`}>{user?.login}</Link>
             </StyledTd>
-            <StyledTd>{user?.repos_url}</StyledTd>
+            <StyledTd>{user?.html_url}</StyledTd>
           </StyledTr>
         ))}
       </tbody>
