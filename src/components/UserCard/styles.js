@@ -10,8 +10,8 @@ export const CardLinkStyle = styled.a `
 `;
 
 export const CardWrapper = styled.div`
-  width: 70vw;
-  min-height: 70vh;
+  width: 70%;
+  min-height: 70%;
   background-color: white;
   border-radius: 8px;
   box-shadow: 4px 4px 6px 1px rgba(77,77,77,0.78);
@@ -34,4 +34,25 @@ export const GridItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
   border-bottom: 1px lightgrey solid;
+`;
+
+export const StyledButton = styled.button`
+  min-width: 120px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: deepskyblue;
+  }
 `;

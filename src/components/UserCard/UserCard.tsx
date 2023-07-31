@@ -3,12 +3,35 @@
 import { IUser } from "@/interfaces/IUser";
 import useSWR from "swr";
 import Image from "next/image";
-import { CardWrapper, GridWrapper, GridItem, CardTitle, CardLinkStyle } from "./styles";
+import {
+  CardWrapper,
+  GridWrapper,
+  GridItem,
+  CardTitle,
+  CardLinkStyle,
+  StyledButton,
+} from "./styles";
+import { MouseEventHandler } from "react";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
 
-export const UserCard = ({ id }: { id: number }) => {
+  if (!res.ok) {
+    const error = new Error();
+    await res.json().then((data) => (error.message = data.message));
+    throw error;
+  }
 
+  return res.json();
+};
+
+export const UserCard = ({
+  id,
+  onClose,
+}: {
+  id: number;
+  onClose: MouseEventHandler<HTMLButtonElement>;
+}) => {
   const {
     data: user,
     error,
@@ -36,14 +59,20 @@ export const UserCard = ({ id }: { id: number }) => {
       <div
         style={{
           width: "100%",
-          height: "80vh",
+          height: "100%",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
+          alignItems:"center",
+          paddingTop: "20%",
+          backgroundColor: "white",
           color: "darkred",
         }}
       >
-        Error occured while fetching user data
+        <div>Error occured while fetching user data</div>
+        <StyledButton onClick={onClose}>Back</StyledButton>
       </div>
+
     );
   }
 
@@ -76,6 +105,7 @@ export const UserCard = ({ id }: { id: number }) => {
           <span>{user?.following ?? 0}</span>
         </GridItem>
       </GridWrapper>
+      <StyledButton onClick={onClose}>Back</StyledButton>
     </CardWrapper>
   );
 };
