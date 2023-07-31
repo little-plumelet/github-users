@@ -26,5 +26,5 @@ export const StyledTr = styled.tr`
 
 export const linkStyle = {
   color: "deepskyblue",
-  "text-decoration": "none",
+  textDecoration: "none",
 };
