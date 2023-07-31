@@ -20,7 +20,7 @@ export const UsersTable: React.FC<IUserTableProps> = ({ users }) => {
     event.stopPropagation();
     setSelectedId(event?.currentTarget?.id ?? null);
     setIsOpen(true);
-
+    window.scrollTo(0,0);
   }
   return (
     <>
